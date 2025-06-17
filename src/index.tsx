@@ -40,7 +40,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <SnackbarProvider autoHideDuration={1500}>
-        <BrowserRouter>
+        <BrowserRouter basename={"/app"}>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
                 <NavBar />
                 <div css={mtCSS}>
