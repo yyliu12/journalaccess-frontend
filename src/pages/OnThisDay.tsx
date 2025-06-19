@@ -65,7 +65,7 @@ export default function OnThisDay() {
                     {files && Object.keys(files).length > 0 ? Object.keys(files).sort().map((year) => (
                         <>
                             <h2>{year}</h2>
-                            <FileTable files={files[year as unknown as number]} openInDialog={true}/>
+                            <FileTable files={files[year as unknown as number]} openInDialog={true} showBacklinks={true} />
                         </>
                     )) : null}
                 </Grid>

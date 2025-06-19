@@ -1,5 +1,5 @@
-export const apiUrl = "/api"
-export const staticUrl = "/static";
+export const apiUrl = "http://localhost:8080/api"
+export const staticUrl = "http://localhost:8080/static";
 export const dateFormat = "YYYY-MM-DD";
 
 export type Tag = {
