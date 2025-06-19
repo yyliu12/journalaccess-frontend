@@ -55,7 +55,7 @@ export function BacklinkBadge({ backlinks }: { backlinks: BacklinkFile[] }) {
                     </DialogActions>
                 </Dialog>
                 {backlinks.length > 0 ? <BootstrapBadge onClick={(e) => { e.stopPropagation(); setBacklinkDialogOpen(true); }}>
-                    {backlinks.length} backlink
+                    {backlinks.length} {backlinks.length === 1 ? 'backlink' : 'backlinks'}
                 </BootstrapBadge> : null}
             </span>
         </>
