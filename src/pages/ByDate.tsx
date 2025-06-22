@@ -49,6 +49,7 @@ export default function ByDate() {
 
     useEffect(() => {
         refreshData();
+        navigate(`/bydate/${viewDate.format(dateFormat)}`);
     }, [viewDate]);
 
     function search() {

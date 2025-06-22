@@ -57,7 +57,7 @@ export default function JournalDatePicker({
     onClose?: () => void
 }) {
     const [datesWithFiles, setDatesWithFiles] = React.useState<Dayjs[]>([]);
-    const [viewDate, setViewDate] = React.useState<Dayjs>(dayjs());
+    const [viewDate, setViewDate] = React.useState<Dayjs>(date);
     const inputRef = React.useRef<HTMLInputElement>(null);
 
     inputRef.current?.addEventListener('keydown', (e) => {
