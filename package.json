@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.14.0",
     "@headless-tree/core": "^1.0.1",
     "@headless-tree/react": "^1.0.1",
+    "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.1",
     "@mui/x-date-pickers": "^8.5.1",
     "@mui/x-date-pickers-pro": "^8.5.1",

@@ -13,6 +13,7 @@ import {
     DialogContent,
     DialogTitle,
     Grid,
+    IconButton,
     List,
     ListItem,
     ListItemButton,
@@ -30,7 +31,8 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { apiUrl, Backlink, dateFormat, FileApiResponse, SearchApiResponseFile, Tag } from 'api';
@@ -122,6 +124,8 @@ function LocationPane({ file, setFile, editsPending }: { file: FileApiResponse, 
     const [finalLocationAddress, setFinalLocationAddress] = React.useState<string>("");
     const [manuallyEnteringLocation, setManuallyEnteringLocation] = React.useState<boolean>(false);
 
+    const [currentlyEditingLocation, setCurrentlyEditingLocation] = React.useState<number>(-1);
+
     const handleSave = () => {
         setFile(produce(file, draft => {
             draft.locations = localLocation;
@@ -176,30 +180,73 @@ function LocationPane({ file, setFile, editsPending }: { file: FileApiResponse, 
         editsPending.current = true;
     }
 
+    function handleEditLocationAddressChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setLocalLocation(produce(localLocation, draft => {
+            draft[currentlyEditingLocation].address = event.target.value;
+        }));
+        editsPending.current = true;
+    }
+
+    function handleEditLocationCoordinatesChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setLocalLocation(produce(localLocation, draft => {
+            draft[currentlyEditingLocation].coordinate = event.target.value;
+        }));
+        editsPending.current = true;
+    }
+
     return (
         <Box>
+            <Dialog open={currentlyEditingLocation != -1}>
+                <DialogTitle>Edit Location</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        fullWidth
+                        label="Address"
+                        value={localLocation[currentlyEditingLocation]?.address || ""}
+                        onChange={handleEditLocationAddressChange}
+                        sx={{mt: 2}}
+                    />
+                    <TextField
+                        fullWidth
+                        label="Coordinates"
+                        value={localLocation[currentlyEditingLocation]?.coordinate || ""}
+                        onChange={handleEditLocationCoordinatesChange}
+                        sx={{mt: 2}}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setCurrentlyEditingLocation(-1)}>Close</Button>
+                </DialogActions>
+            </Dialog>
+
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell sx={{ width: "45%" }}><b>Coordinates</b></TableCell>
-                            <TableCell sx={{ width: "45%" }}><b>Address</b></TableCell>
-                            <TableCell sx={{ width: "10%" }}></TableCell>
+                            <TableCell sx={{ width: "20%" }}><b>Coordinates</b></TableCell>
+                            <TableCell sx={{ width: "65%" }}><b>Address</b></TableCell>
+                            <TableCell sx={{ width: "15%" }}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {localLocation.map((location, index) => (
                             <TableRow key={index}>
-                                <TableCell sx={{ width: "45%" }}>{location.coordinate}</TableCell>
-                                <TableCell sx={{ width: "45%" }}>{location.address}</TableCell>
-                                <TableCell sx={{ width: "10%" }}>
-                                    <Button
-                                        variant="text"
+                                <TableCell sx={{ width: "20%" }}>{location.coordinate}</TableCell>
+                                <TableCell sx={{ width: "65%" }}>{location.address}</TableCell>
+                                <TableCell sx={{ width: "15%" }}>
+                                    <IconButton
                                         color="error"
                                         onClick={() => { removeLocation(index) }}
                                     >
-                                        Remove
-                                    </Button>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={() => {
+                                            setCurrentlyEditingLocation(index);
+                                        }}
+                                    >
+                                        <CreateIcon />
+                                    </IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}
