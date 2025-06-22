@@ -100,6 +100,7 @@ export default function JournalDatePicker({
             }}
             ref={inputRef}
             onClose={onClose}
+            views={['year', 'month', 'day']}
         />
     );
 }
