@@ -61,7 +61,7 @@ function Search() {
 
     return (
         <Container>
-            <SearchCreator onSearch={handleSearch} />
+            <SearchCreator onSearch={handleSearch} showSort={true}/>
             <Grid container spacing={2}>
                 {results?.error != null ? (
                     <Alert sx={{ mt: 3 }} severity="error">{results?.error}</Alert>

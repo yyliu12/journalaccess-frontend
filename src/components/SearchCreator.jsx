@@ -1,17 +1,18 @@
 /* global $ */
 
 
-import { Button, Dialog, DialogActions, DialogContent, FormControl, FormGroup, FormLabel, RadioGroup, FormControlLabel, Radio, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, FormControl, FormGroup, FormLabel, RadioGroup, FormControlLabel, Radio, TextField, Select, MenuItem } from '@mui/material';
 import { SearchQuery, apiUrl, staticUrl } from 'api';
 import React, { useEffect, useCallback } from 'react';
 import { produce } from 'immer';
 
 
 
-export default function SearchCreator({ onSearch }) {
+export default function SearchCreator({ onSearch, showSort = false }) {
     const [searchQuery, setSearchQuery] = React.useState(
         {
             query: '',
+            sort: "score desc",
             tags: {
                 tags: [],
                 includeFolders: false,
@@ -187,12 +188,25 @@ export default function SearchCreator({ onSearch }) {
                         triggerSearch();
                     }
                 }}
-                sx={{mb: 2}}
+                sx={{ mb: 2 }}
             />
 
             <Button variant="text" onClick={() => setTagDialogOpen(true)}>
                 Edit Tags
             </Button>
+            {showSort ? <FormControl size="small">
+                <Select value={searchQuery.sort} onChange={(e) => {
+                    setSearchQuery(produce(searchQuery, (draft) => {
+                        draft.sort = e.target.value;
+                    }));
+                }}>
+                    <MenuItem value="score desc">Relevance</MenuItem>
+                    <MenuItem value="date desc">Date Descending</MenuItem>
+                    <MenuItem value="date asc">Date Ascending</MenuItem>
+                </Select>
+            </FormControl> : null}
+
+
 
             <Button variant="contained" onClick={triggerSearch}>
                 Search

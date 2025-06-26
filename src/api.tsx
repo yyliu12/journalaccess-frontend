@@ -59,11 +59,13 @@ export type TagSearchQuery = {
 
 export type SearchQuery = {
     query: string;
+    sort: string;
     tags: TagSearchQuery;
 }
 
 export const defaultSearchQuery: SearchQuery = {
     query: "",
+    sort: "score desc",
     tags: {
         tags: [],
         includeFolders: false,
