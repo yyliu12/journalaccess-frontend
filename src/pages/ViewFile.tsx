@@ -73,6 +73,13 @@ function ViewPane({ file }: { file: FileApiResponse }) {
         <iframe css={iframeStyle} src={getUrlForFile(file)} />
     );
 }
+// for PDFs only
+function AnnotatorPane({ file }: { file: FileApiResponse }) {
+    return (
+        <iframe css={iframeStyle} src={`${apiUrl}/annotation/getEditor/byId/${file.id}`} />
+    );
+}
+
 
 function EditTextPane({ file, setFile, editsPending }: { file: FileApiResponse, setFile: (file: FileApiResponse | null) => void, editsPending: React.RefObject<boolean> }) {
     const [localContent, setLocalContent] = React.useState(file.content);
@@ -721,6 +728,9 @@ export default function ViewFile({ idProp = -1 }: { idProp?: number }) {
                             {file?.path.endsWith(".html") ? (
                                 <Tab label="Online Editor" />
                             ) : null}
+                            {file?.path.endsWith(".pdf") ? (
+                                <Tab label="Annotator" />
+                            ) : null}
 
 
                         </Tabs>
@@ -736,7 +746,8 @@ export default function ViewFile({ idProp = -1 }: { idProp?: number }) {
                                     {tabPane === 4 ? <TagsPane file={file} setFile={setFileAndSave} editsPending={editsPending} /> : null}
                                     {tabPane === 5 ? <BacklinksPane file={file} /> : null}
                                     {tabPane === 6 ? <DeletePane file={file} setFile={setFileAndSave} editsPending={editsPending} /> : null}
-                                    {tabPane === 7 ? <OnlineEditor id={file.id} /> : null}
+                                    {tabPane === 7 && file?.path.endsWith(".html") ? <OnlineEditor id={file.id} /> : null}
+                                    {tabPane === 7 && file?.path.endsWith(".pdf") ? <AnnotatorPane file={file} /> : null}
 
                                 </>
                             ) : <>Loading...</>}

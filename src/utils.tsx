@@ -17,7 +17,7 @@ export function jsonToFormData(json: Record<string, any>): FormData {
 }
 
 export function getUrlForFile(f: FileApiResponse | SearchApiResponseFile): string {
-    return `${apiUrl}/files/getFile/${f.date}/${f.path}`;
+    return `${apiUrl}/annotation/getViewer/byId/${f.id}`;
 }
 
 export function formatDayJsDate(date: Dayjs): string {
