@@ -24,15 +24,9 @@ export default function ByDate() {
     const [writeOnlineDialogOpen, setWriteOnlineDialogOpen] = React.useState<boolean>(false);
     const [writeOnlinePath, setWriteOnlinePath] = React.useState<string>("");
 
-    let initDate: Dayjs = dayjs();
-    if (params.date) {
-        initDate = dayjs(params.date);
-    } else {
-        navigate(`/bydate/${initDate.format(dateFormat)}`);
-    }
-
-    const [date, setDate] = React.useState<Dayjs>(initDate);
-    const [viewDate, setViewDate] = React.useState<Dayjs>(initDate);
+    const [date, setDate] = React.useState<Dayjs>(dayjs());
+    const dateRef = React.useRef<Dayjs>(date);
+    const [viewDate, setViewDate] = React.useState<Dayjs>(dayjs());
 
     function refreshData() {
         fetch(apiUrl + "/files/byDate", {
@@ -48,12 +42,24 @@ export default function ByDate() {
     }
 
     useEffect(() => {
+        if (params.date) {
+            var initDate = dayjs(params.date);
+            setDate(initDate);
+            setViewDate(initDate);
+        }
+    }, []);
+
+    useEffect(() => {
+        dateRef.current = date;
+    }, [date])
+
+    useEffect(() => {
         refreshData();
         navigate(`/bydate/${viewDate.format(dateFormat)}`);
     }, [viewDate]);
 
     function search() {
-        setViewDate(date);
+        setViewDate(dateRef.current);
     }
 
     // race conditions may occur here because setState is async
@@ -92,6 +98,7 @@ export default function ByDate() {
             });
     }
 
+    console.log(date);
 
     return (
         <Container>
@@ -126,7 +133,7 @@ export default function ByDate() {
                 <Grid size={3}>
                     <Card>
                         <CardContent>
-                            <JournalDatePicker onEnter={search} date={date} setDate={setDate} />
+                            <JournalDatePicker onEnter={() => {search()}} date={date} setDate={setDate} />
                             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                                 <Button sx={{ mt: 1, mb: 3 }} onClick={search} variant="contained">Search</Button>
                             </Box>

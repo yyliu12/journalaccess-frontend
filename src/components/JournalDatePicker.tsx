@@ -48,8 +48,8 @@ function JournalDatePickerDay({ datesWithFiles, ...dateComponentProps }: any) {
 export default function JournalDatePicker({
     date,
     setDate,
-    onEnter = () => {},
-    onClose = () => {}
+    onEnter = () => { },
+    onClose = () => { }
 }: {
     date: Dayjs,
     setDate: React.Dispatch<React.SetStateAction<Dayjs>>,
@@ -60,12 +60,8 @@ export default function JournalDatePicker({
     const [viewDate, setViewDate] = React.useState<Dayjs>(date);
     const inputRef = React.useRef<HTMLInputElement>(null);
 
-    inputRef.current?.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            onEnter();
-        }
-    });
+
+
 
     useEffect(() => {
         fetch(apiUrl + "/files/datesWithFiles", {
@@ -78,6 +74,13 @@ export default function JournalDatePicker({
             return response.json();
         }).then((data) => {
             setDatesWithFiles(data.map((dateString: string) => dayjs(dateString))); // Assuming the API returns an array of dates
+        });
+
+        inputRef.current?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                onEnter();
+            }
         });
     }, [viewDate]);
 
