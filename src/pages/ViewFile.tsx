@@ -169,6 +169,7 @@ function LocationPane({ file, setFile, editsPending }: { file: FileApiResponse, 
     function addLocation() {
         if (!finalLocationCoordinates.includes(", ")) {
             enqueueSnackbar("Coordinates must be in the format 'latitude, longitude,' with a space and comma in between.", { variant: "error" });
+            return;
         }
 
         setLocalLocation(produce(localLocation, draft => {
