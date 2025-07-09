@@ -31,11 +31,15 @@ function Search() {
     const [selected, setSelected] = React.useState<number | null>(null);
     const [page, setPage] = React.useState<number>(0);
     const currentSearchQuery = React.useRef<SearchQuery | null>(null);
+    const resultDiv = React.useRef<HTMLDivElement>(null);
 
     function handleSearch(e: SearchQuery) {
         currentSearchQuery.current = e;
 
         setSelected(null);
+        setPage(0);
+        resultDiv.current?.scrollTo(0, 0);
+
         fetch(apiUrl + "/files/search", {
             method: 'POST',
             body: jsonToFormData({
@@ -47,6 +51,8 @@ function Search() {
         }).then((data) => {
             setResults(data as SearchApiResponse);
         });
+
+        
     }
 
     useEffect(() => {
@@ -69,7 +75,7 @@ function Search() {
 
                 <Grid size={3}>
                     {results ? <>
-                        <div css={sidebarStyle}>
+                        <div css={sidebarStyle} ref={resultDiv}>
                             <Box sx={{ padding: 2, backgroundColor: grey[200], position: "sticky", top: 0, textAlign: "center", mb: 2 }}>
                                 (Number of results: {results.numFound || 0})
                                 <Box>
