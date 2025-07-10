@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import { grey } from '@mui/material/colors';
 import { BacklinkBadge } from 'components/BacklinkBadge';
 import SearchCreator from 'components/SearchCreator';
+import LocationBadge from 'components/LocationBadge';
 
 const iframeStyle = css`
     width: 100%;
@@ -117,9 +118,11 @@ function Search() {
                                 >
                                     <CardContent>
                                         <Typography sx={{ color: 'text.secondary' }}>
-                                            <Link to={"/bydate/" + result.date}>{result.date}</Link> <BacklinkBadge backlinks={result.backlinks} />
+                                            <Link to={"/bydate/" + result.date}>{result.date}</Link> <BacklinkBadge backlinks={result.backlinks} /> <LocationBadge locations={result.locations} />
                                         </Typography>
                                         <Typography variant="body2" dangerouslySetInnerHTML={{ __html: result.highlight }} />
+                                        {/* we'll think of a way to show multiple locations later*/}
+                                        
                                     </CardContent>
 
                                 </Card>
