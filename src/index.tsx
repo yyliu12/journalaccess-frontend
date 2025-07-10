@@ -15,12 +15,9 @@ import 'dayjs/locale/en';
 import { SnackbarProvider } from 'notistack';
 import '@progress/kendo-theme-default/dist/all.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { teal } from '@mui/material/colors';
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    }
-});
+
 
 var mtCSS = css`
     margin-top:64px;
